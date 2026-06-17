@@ -26,6 +26,19 @@ public class TemplateService {
                 .orElseThrow(() -> new RuntimeException("Template not found"));
     }
 
+    public Template updateTemplate(Long id, Template newTemplate) {
+        Template template = getTemplateById(id);
+        template.setCode(newTemplate.getCode());
+        template.setName(newTemplate.getName());
+        template.setOrganizationName(newTemplate.getOrganizationName());
+        template.setLayout(newTemplate.getLayout());
+        template.setPrimaryColor(newTemplate.getPrimaryColor());
+        template.setSecondaryColor(newTemplate.getSecondaryColor());
+        template.setTextColor(newTemplate.getTextColor());
+        template.setTagline(newTemplate.getTagline());
+        return templateRepository.save(template);
+    }
+
     public void deleteTemplate(Long id) {
         templateRepository.deleteById(id);
     }

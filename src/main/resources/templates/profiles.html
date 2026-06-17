@@ -1,123 +1,385 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ID Card Management System</title>
     <style>
-        body{
-            font-family:Arial,sans-serif;
-            background:#f4f6f9;
-            margin:0;
+        * { box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f4f6f9; color: #111827; margin: 0; }
+        .navbar { background: #1e3a8a; color: #fff; padding: 18px 40px; }
+        .navbar h2 { margin: 0; font-size: 22px; }
+        .container { width: min(1180px, 94vw); margin: 24px auto; }
+        .panel { background: #fff; padding: 22px; border-radius: 8px; margin-bottom: 22px; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+        .layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 24px; align-items: start; }
+        .form-grid { display: grid; grid-template-columns: repeat(3, minmax(150px, 1fr)); gap: 12px; }
+        label { display: grid; gap: 5px; font-size: 12px; font-weight: 700; color: #475569; text-transform: uppercase; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 5px; font-size: 14px; }
+        input[readonly] { background: #f8fafc; color: #64748b; }
+        button, .button-link { padding: 10px 14px; border: 0; border-radius: 6px; cursor: pointer; margin: 4px 4px 4px 0; font-size: 14px; text-decoration: none; display: inline-block; }
+        .save { background: #2563eb; color: #fff; }
+        .delete { background: #dc2626; color: #fff; }
+        .edit { background: #16a34a; color: #fff; }
+        .pdf { background: #7c3aed; color: #fff; }
+        .batch { background: #f59e0b; color: #111827; }
+        .secondary { background: #e2e8f0; color: #0f172a; }
+        .actions { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        .preview { border: 2px solid #2563eb; border-radius: 8px; padding: 16px; background: #eff6ff; }
+        .preview h3 { margin-top: 0; }
+        .id-card { background: #fff; border-radius: 8px; padding: 15px; border: 1px solid #cbd5e1; overflow-wrap: anywhere; }
+        .id-title { background: #1e3a8a; color: #fff; padding: 10px; border-radius: 6px; text-align: center; font-weight: 700; }
+        .photo-box { width: 96px; height: 108px; border: 1px dashed #888; display: flex; align-items: center; justify-content: center; font-size: 12px; margin-top: 12px; background: #f8fafc; overflow: hidden; }
+        .photo-box img { width: 100%; height: 100%; object-fit: cover; }
+        .codes { display: grid; gap: 10px; justify-items: start; }
+        .codes img { max-width: 100%; background: #fff; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 10px; border-bottom: 1px solid #ddd; text-align: left; vertical-align: middle; }
+        th { background: #f1f5f9; font-size: 13px; }
+        .badge { padding: 5px 10px; border-radius: 15px; background: #dbeafe; color: #1e40af; font-weight: 700; font-size: 12px; }
+        .thumb { width: 44px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid #cbd5e1; background: #f8fafc; }
+        .status { min-height: 20px; color: #475569; margin-top: 8px; }
+        @media (max-width: 900px) {
+            .layout { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: repeat(2, minmax(140px, 1fr)); }
+            .preview { width: 100%; }
         }
-
-        .navbar{
-            background:#1e3a8a;
-            color:white;
-            padding:15px;
-        }
-
-        .container{
-            width:90%;
-            margin:auto;
-            margin-top:20px;
-        }
-
-        .card{
-            background:white;
-            padding:20px;
-            border-radius:10px;
-            margin-bottom:20px;
-            box-shadow:0 2px 5px rgba(0,0,0,.1);
-        }
-
-        input,select{
-            padding:10px;
-            margin:5px;
-            width:200px;
-        }
-
-        button{
-            padding:10px 15px;
-            border:none;
-            border-radius:5px;
-            cursor:pointer;
-        }
-
-        .save{
-            background:#2563eb;
-            color:white;
-        }
-
-        .delete{
-            background:#dc2626;
-            color:white;
-        }
-
-        .preview{
-            border:2px solid #2563eb;
-            padding:15px;
-            width:350px;
-            margin-top:20px;
-        }
-
-        table{
-            width:100%;
-            border-collapse:collapse;
-        }
-
-        th,td{
-            padding:10px;
-            border-bottom:1px solid #ddd;
+        @media (max-width: 620px) {
+            .navbar { padding: 16px; }
+            .form-grid { grid-template-columns: 1fr; }
+            table { display: block; overflow-x: auto; white-space: nowrap; }
         }
     </style>
 </head>
-
 <body>
 
 <div class="navbar">
     <h2>ID Card Generator System</h2>
 </div>
 
-<div class="container">
+<main class="container">
+    <section class="panel">
+        <h2>Create / Update Profile</h2>
 
-<div class="card">
-<h3>Create Profile</h3>
+        <div class="layout">
+            <div>
+                <input type="hidden" id="profileId">
 
-<input id="registrationNumber" placeholder="Registration Number">
+                <div class="form-grid">
+                    <label>Registration No
+                        <input id="registrationNumber" placeholder="Assigned on save" readonly>
+                    </label>
+                    <label>Full Name
+                        <input id="fullName" placeholder="Full Name" oninput="previewCard()" required>
+                    </label>
+                    <label>Email
+                        <input id="email" type="email" placeholder="Email" oninput="previewCard()">
+                    </label>
+                    <label>Phone
+                        <input id="phone" placeholder="Phone" oninput="previewCard()">
+                    </label>
+                    <label>Department
+                        <input id="department" placeholder="Department" oninput="previewCard()">
+                    </label>
+                    <label>Title / Class / Position
+                        <input id="title" placeholder="Title / Class / Position" oninput="previewCard()">
+                    </label>
+                    <label>Blood Group
+                        <input id="bloodGroup" placeholder="Blood Group" oninput="previewCard()">
+                    </label>
+                    <label>Type
+                        <select id="type" onchange="previewCard()">
+                            <option value="STUDENT">STUDENT</option>
+                            <option value="EMPLOYEE">EMPLOYEE</option>
+                            <option value="USER">USER</option>
+                        </select>
+                    </label>
+                    <label>Barcode Type
+                        <select id="barcodeType" onchange="previewCard()">
+                            <option value="CODE_128">CODE_128</option>
+                            <option value="EAN_13">EAN_13</option>
+                        </select>
+                    </label>
+                    <label>Date of Birth
+                        <input type="date" id="dateOfBirth">
+                    </label>
+                    <label>Issue Date
+                        <input type="date" id="issueDate">
+                    </label>
+                    <label>Expiry Date
+                        <input type="date" id="expiryDate">
+                    </label>
+                    <label>JPEG / PNG Photo
+                        <input type="file" id="photo" accept="image/png,image/jpeg" onchange="previewPhoto()">
+                    </label>
+                </div>
 
-<input id="fullName"
-placeholder="Full Name"
-onkeyup="previewCard()">
+                <div class="actions">
+                    <button class="save" onclick="saveProfile()">Save Profile</button>
+                    <button class="secondary" onclick="clearForm()">New Profile</button>
+                    <a class="button-link batch" href="/api/profiles/batch/pdf">Batch PDF Export</a>
+                </div>
+                <div class="status" id="status"></div>
+            </div>
 
-<input id="email"
-placeholder="Email"
-onkeyup="previewCard()">
+            <aside class="preview">
+                <h3>ID Card Live Preview</h3>
+                <div class="id-card" id="idCard">
+                    <div class="id-title">ID CARD</div>
+                    <div class="photo-box" id="photoPreview">Photo</div>
+                    <p><b>Reg No:</b> <span id="pReg">AUTO</span></p>
+                    <p><b>Name:</b> <span id="pName">-</span></p>
+                    <p><b>Type:</b> <span id="pType">STUDENT</span></p>
+                    <p><b>Department:</b> <span id="pDepartment">-</span></p>
+                    <p><b>Title:</b> <span id="pTitle">-</span></p>
+                    <p><b>Email:</b> <span id="pEmail">-</span></p>
+                    <p><b>Phone:</b> <span id="pPhone">-</span></p>
+                    <p><b>Blood:</b> <span id="pBlood">-</span></p>
+                    <div class="codes">
+                        <img id="qrPreview" alt="QR code preview" width="110" height="110">
+                        <img id="barcodePreview" alt="Barcode preview" width="220" height="60">
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </section>
 
-<input id="phone"
-placeholder="Phone"
-onkeyup="previewCard()">
+    <section class="panel">
+        <h2>Profiles List</h2>
 
-<input id="department"
-placeholder="Department"
-onkeyup="previewCard()">
+        <table>
+            <thead>
+            <tr>
+                <th>Photo</th>
+                <th>Reg No</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Department</th>
+                <th>Title</th>
+                <th>Email</th>
+                <th>Barcode</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="profileTable"></tbody>
+        </table>
+    </section>
+</main>
 
-<select id="profileType" onchange="previewCard()">
-<option value="STUDENT">STUDENT</option>
-<option value="EMPLOYEE">EMPLOYEE</option>
-<option value="USER">USER</option>
-</select>
+<script>
+    const API_URL = "/api/profiles";
+    let profiles = [];
 
-<input type="file" id="photo">
+    function escapeHtml(value) {
+        return String(value ?? "").replace(/[&<>"']/g, char => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            "\"": "&quot;",
+            "'": "&#39;"
+        }[char]));
+    }
 
-<br><br>
+    function status(message) {
+        document.getElementById("status").innerText = message || "";
+    }
 
-<button class="save" onclick="createProfile()">
-Save Profile
-</button>
+    function draftRegNo() {
+        const year = new Date().getFullYear();
+        const deptValue = document.getElementById("department").value.replace(/[^a-z0-9]/gi, "").toUpperCase();
+        const dept = (deptValue || "GEN").substring(0, 3);
+        return `${year}-${dept}-###`;
+    }
 
-<button onclick="generatePDF()">
-Export PDF
-</button>
+    function currentQrText() {
+        const reg = document.getElementById("registrationNumber").value || draftRegNo();
+        const name = document.getElementById("fullName").value || "-";
+        const type = document.getElementById("type").value;
+        return `IDCARD|${reg}|${name}|${type}`;
+    }
 
-<button onclick="generateBatch()">
-Batch Generate
-</button>
+    function previewCard() {
+        const reg = document.getElementById("registrationNumber").value || draftRegNo();
+        const name = document.getElementById("fullName").value || "-";
+        const type = document.getElementById("type").value;
+        const dept = document.getElementById("department").value || "-";
+        const title = document.getElementById("title").value || "-";
+        const email = document.getElementById("email").value || "-";
+        const phone = document.getElementById("phone").value || "-";
+        const blood = document.getElementById("bloodGroup").value || "-";
+        const barcodeType = document.getElementById("barcodeType").value === "EAN_13" ? "EAN13" : "Code128";
+
+        document.getElementById("pReg").innerText = reg;
+        document.getElementById("pName").innerText = name;
+        document.getElementById("pType").innerText = type;
+        document.getElementById("pDepartment").innerText = dept;
+        document.getElementById("pTitle").innerText = title;
+        document.getElementById("pEmail").innerText = email;
+        document.getElementById("pPhone").innerText = phone;
+        document.getElementById("pBlood").innerText = blood;
+
+        document.getElementById("qrPreview").src =
+            `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(currentQrText())}`;
+        document.getElementById("barcodePreview").src =
+            `https://barcode.tec-it.com/barcode.ashx?data=${encodeURIComponent(reg)}&type=${barcodeType}`;
+    }
+
+    function previewPhoto() {
+        const file = document.getElementById("photo").files[0];
+        if (!file) return;
+
+        if (!["image/jpeg", "image/png"].includes(file.type)) {
+            alert("Only JPEG and PNG images are allowed.");
+            document.getElementById("photo").value = "";
+            return;
+        }
+        if (file.size > 2 * 1024 * 1024) {
+            alert("Photo size must be less than 2MB.");
+            document.getElementById("photo").value = "";
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = event => {
+            document.getElementById("photoPreview").innerHTML = `<img src="${event.target.result}" alt="Photo preview">`;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    async function loadProfiles() {
+        const response = await fetch(API_URL);
+        profiles = await response.json();
+
+        const table = document.getElementById("profileTable");
+        table.innerHTML = "";
+
+        profiles.forEach(profile => {
+            const photo = profile.photoFileName
+                ? `<img class="thumb" src="/uploads/${encodeURIComponent(profile.photoFileName)}" alt="Profile photo">`
+                : "";
+            table.innerHTML += `
+                <tr>
+                    <td>${photo}</td>
+                    <td>${escapeHtml(profile.registrationNumber)}</td>
+                    <td>${escapeHtml(profile.fullName)}</td>
+                    <td><span class="badge">${escapeHtml(profile.type)}</span></td>
+                    <td>${escapeHtml(profile.department)}</td>
+                    <td>${escapeHtml(profile.title)}</td>
+                    <td>${escapeHtml(profile.email)}</td>
+                    <td>${escapeHtml(profile.barcodeType)}</td>
+                    <td>
+                        <button class="edit" onclick="editProfile(${profile.id})">Edit</button>
+                        <a class="button-link pdf" href="${API_URL}/${profile.id}/pdf">PDF</a>
+                        <button class="delete" onclick="deleteProfile(${profile.id})">Delete</button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    async function saveProfile() {
+        const id = document.getElementById("profileId").value;
+        const profile = {
+            fullName: document.getElementById("fullName").value,
+            email: document.getElementById("email").value,
+            phone: document.getElementById("phone").value,
+            department: document.getElementById("department").value,
+            title: document.getElementById("title").value,
+            bloodGroup: document.getElementById("bloodGroup").value,
+            type: document.getElementById("type").value,
+            barcodeType: document.getElementById("barcodeType").value,
+            dateOfBirth: document.getElementById("dateOfBirth").value || null,
+            issueDate: document.getElementById("issueDate").value || null,
+            expiryDate: document.getElementById("expiryDate").value || null
+        };
+
+        const response = await fetch(id ? `${API_URL}/${id}` : API_URL, {
+            method: id ? "PUT" : "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(profile)
+        });
+
+        if (!response.ok) {
+            status("Unable to save profile.");
+            return;
+        }
+
+        const saved = await response.json();
+        await uploadPhoto(saved.id);
+        status(`Saved ${saved.registrationNumber}.`);
+        clearForm();
+        await loadProfiles();
+    }
+
+    async function uploadPhoto(profileId) {
+        const file = document.getElementById("photo").files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append("photo", file);
+        const response = await fetch(`${API_URL}/${profileId}/photo`, {
+            method: "POST",
+            body: formData
+        });
+        if (!response.ok) {
+            throw new Error("Photo upload failed");
+        }
+    }
+
+    function editProfile(id) {
+        const profile = profiles.find(item => item.id === id);
+        if (!profile) return;
+
+        document.getElementById("profileId").value = profile.id;
+        document.getElementById("registrationNumber").value = profile.registrationNumber || "";
+        document.getElementById("fullName").value = profile.fullName || "";
+        document.getElementById("email").value = profile.email || "";
+        document.getElementById("phone").value = profile.phone || "";
+        document.getElementById("department").value = profile.department || "";
+        document.getElementById("title").value = profile.title || "";
+        document.getElementById("bloodGroup").value = profile.bloodGroup || "";
+        document.getElementById("type").value = profile.type || "STUDENT";
+        document.getElementById("barcodeType").value = profile.barcodeType || "CODE_128";
+        document.getElementById("dateOfBirth").value = profile.dateOfBirth || "";
+        document.getElementById("issueDate").value = profile.issueDate || "";
+        document.getElementById("expiryDate").value = profile.expiryDate || "";
+        document.getElementById("photo").value = "";
+        document.getElementById("photoPreview").innerHTML = profile.photoFileName
+            ? `<img src="/uploads/${encodeURIComponent(profile.photoFileName)}" alt="Photo preview">`
+            : "Photo";
+        previewCard();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    async function deleteProfile(id) {
+        if (!confirm("Delete this profile?")) return;
+
+        await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+        status("Profile deleted.");
+        await loadProfiles();
+    }
+
+    function clearForm() {
+        document.getElementById("profileId").value = "";
+        document.getElementById("registrationNumber").value = "";
+        document.getElementById("fullName").value = "";
+        document.getElementById("email").value = "";
+        document.getElementById("phone").value = "";
+        document.getElementById("department").value = "";
+        document.getElementById("title").value = "";
+        document.getElementById("bloodGroup").value = "";
+        document.getElementById("type").value = "STUDENT";
+        document.getElementById("barcodeType").value = "CODE_128";
+        document.getElementById("dateOfBirth").value = "";
+        document.getElementById("issueDate").value = "";
+        document.getElementById("expiryDate").value = "";
+        document.getElementById("photo").value = "";
+        document.getElementById("photoPreview").innerHTML = "Photo";
+        previewCard();
+    }
+
+    previewCard();
+    loadProfiles();
+</script>
+
+</body>
+</html>

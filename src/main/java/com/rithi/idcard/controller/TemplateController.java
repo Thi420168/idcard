@@ -29,6 +29,11 @@ public class TemplateController {
         return templateService.getTemplateById(id);
     }
 
+    @PutMapping("/{id}")
+    public Template updateTemplate(@PathVariable Long id, @RequestBody Template template) {
+        return templateService.updateTemplate(id, template);
+    }
+
     @DeleteMapping("/{id}")
     public String deleteTemplate(@PathVariable Long id) {
         templateService.deleteTemplate(id);
