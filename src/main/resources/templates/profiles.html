@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ID Card Management System</title>
+    <style>
+        body{
+            font-family:Arial,sans-serif;
+            background:#f4f6f9;
+            margin:0;
+        }
+
+        .navbar{
+            background:#1e3a8a;
+            color:white;
+            padding:15px;
+        }
+
+        .container{
+            width:90%;
+            margin:auto;
+            margin-top:20px;
+        }
+
+        .card{
+            background:white;
+            padding:20px;
+            border-radius:10px;
+            margin-bottom:20px;
+            box-shadow:0 2px 5px rgba(0,0,0,.1);
+        }
+
+        input,select{
+            padding:10px;
+            margin:5px;
+            width:200px;
+        }
+
+        button{
+            padding:10px 15px;
+            border:none;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        .save{
+            background:#2563eb;
+            color:white;
+        }
+
+        .delete{
+            background:#dc2626;
+            color:white;
+        }
+
+        .preview{
+            border:2px solid #2563eb;
+            padding:15px;
+            width:350px;
+            margin-top:20px;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        th,td{
+            padding:10px;
+            border-bottom:1px solid #ddd;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2>ID Card Generator System</h2>
+</div>
+
+<div class="container">
+
+<div class="card">
+<h3>Create Profile</h3>
+
+<input id="registrationNumber" placeholder="Registration Number">
+
+<input id="fullName"
+placeholder="Full Name"
+onkeyup="previewCard()">
+
+<input id="email"
+placeholder="Email"
+onkeyup="previewCard()">
+
+<input id="phone"
+placeholder="Phone"
+onkeyup="previewCard()">
+
+<input id="department"
+placeholder="Department"
+onkeyup="previewCard()">
+
+<select id="profileType" onchange="previewCard()">
+<option value="STUDENT">STUDENT</option>
+<option value="EMPLOYEE">EMPLOYEE</option>
+<option value="USER">USER</option>
+</select>
+
+<input type="file" id="photo">
+
+<br><br>
+
+<button class="save" onclick="createProfile()">
+Save Profile
+</button>
+
+<button onclick="generatePDF()">
+Export PDF
+</button>
+
+<button onclick="generateBatch()">
+Batch Generate
+</button>

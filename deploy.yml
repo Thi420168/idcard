@@ -1,17 +1,35 @@
 ---
-- name: Deploy to Web Server
+- name: Deploy Spring Boot App
   hosts: localhost
   connection: local
 
   tasks:
-    - name: Show deployment message
-      debug:
-        msg: "Deploying Spring Boot application to Web Server"
+    - name: Stop old Spring Boot app on port 8081
+      shell: |
+        PID=$(lsof -ti:8081)
+        if [ -n "$PID" ]; then
+          kill -9 $PID
+        fi
+      ignore_errors: yes
 
-    - name: Show current directory
-      command: pwd
-      register: deploy_path
+    - name: Build Spring Boot app
+      shell: ./mvnw clean package -DskipTests
+      args:
+        chdir: /home/oun-rithi/Downloads/idcard
 
-    - name: Print deploy path
+    - name: Run Spring Boot app on port 8081
+      shell: |
+        nohup java -jar target/*.jar \
+        --server.port=8081 \
+        --spring.datasource.url='jdbc:mysql://localhost:3306/B-OUN_RITHI-db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC' \
+        --spring.datasource.username=idcarduser \
+        --spring.datasource.password='Hello@123' \
+        --spring.jpa.hibernate.ddl-auto=update \
+        --spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect \
+        > app.log 2>&1 &
+      args:
+        chdir: /home/oun-rithi/Downloads/idcard
+
+    - name: Show deploy message
       debug:
-        var: deploy_path.stdout
+        msg: "Spring Boot app deployed on port 8081"

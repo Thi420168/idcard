@@ -36,8 +36,6 @@ public class ProfileService {
         profile.setEmail(newProfile.getEmail());
         profile.setPhone(newProfile.getPhone());
         profile.setDepartment(newProfile.getDepartment());
-        profile.setPhotoPath(newProfile.getPhotoPath());
-        profile.setProfileType(newProfile.getProfileType());
 
         return profileRepository.save(profile);
     }

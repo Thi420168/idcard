@@ -1,0 +1,53 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.0)
+
+2026-06-17T20:26:20.617+07:00  INFO 48528 --- [idcard] [           main] com.rithi.idcard.IdcardApplication       : Starting IdcardApplication v0.0.1-SNAPSHOT using Java 21.0.10 with PID 48528 (/home/oun-rithi/Downloads/idcard/target/idcard-0.0.1-SNAPSHOT.jar started by oun-rithi in /home/oun-rithi/Downloads/idcard)
+2026-06-17T20:26:20.620+07:00  INFO 48528 --- [idcard] [           main] com.rithi.idcard.IdcardApplication       : No active profile set, falling back to 1 default profile: "default"
+2026-06-17T20:26:21.263+07:00  INFO 48528 --- [idcard] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-17T20:26:21.299+07:00  INFO 48528 --- [idcard] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 30 ms. Found 2 JPA repository interfaces.
+2026-06-17T20:26:21.655+07:00  INFO 48528 --- [idcard] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8081 (http)
+2026-06-17T20:26:21.666+07:00  INFO 48528 --- [idcard] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-17T20:26:21.666+07:00  INFO 48528 --- [idcard] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.22]
+2026-06-17T20:26:21.686+07:00  INFO 48528 --- [idcard] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1024 ms
+2026-06-17T20:26:21.849+07:00  INFO 48528 --- [idcard] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-06-17T20:26:21.894+07:00  INFO 48528 --- [idcard] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.1.Final
+2026-06-17T20:26:22.271+07:00  INFO 48528 --- [idcard] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-06-17T20:26:22.296+07:00  INFO 48528 --- [idcard] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-17T20:26:22.408+07:00  INFO 48528 --- [idcard] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2ee456c7
+2026-06-17T20:26:22.409+07:00  INFO 48528 --- [idcard] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-06-17T20:26:22.440+07:00  WARN 48528 --- [idcard] [           main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-06-17T20:26:22.454+07:00  INFO 48528 --- [idcard] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/B-OUN_RITHI-db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.46
+	Default catalog/schema: B-OUN_RITHI-db/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-06-17T20:26:23.065+07:00  INFO 48528 --- [idcard] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-06-17T20:26:23.111+07:00  INFO 48528 --- [idcard] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-06-17T20:26:23.167+07:00  INFO 48528 --- [idcard] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-06-17T20:26:23.305+07:00  WARN 48528 --- [idcard] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-06-17T20:26:23.601+07:00  INFO 48528 --- [idcard] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8081 (http) with context path '/'
+2026-06-17T20:26:23.609+07:00  INFO 48528 --- [idcard] [           main] com.rithi.idcard.IdcardApplication       : Started IdcardApplication in 3.34 seconds (process running for 3.805)
+2026-06-17T20:26:30.071+07:00  INFO 48528 --- [idcard] [nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-17T20:26:30.072+07:00  INFO 48528 --- [idcard] [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-06-17T20:26:30.073+07:00  INFO 48528 --- [idcard] [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+Hibernate: select p1_0.id,p1_0.department,p1_0.email,p1_0.full_name,p1_0.phone,p1_0.photo_path,p1_0.profile_type,p1_0.registration_number from profile p1_0
+Hibernate: insert into profile (department,email,full_name,phone,photo_path,profile_type,registration_number) values (?,?,?,?,?,?,?)
+Hibernate: select p1_0.id,p1_0.department,p1_0.email,p1_0.full_name,p1_0.phone,p1_0.photo_path,p1_0.profile_type,p1_0.registration_number from profile p1_0
+Hibernate: select p1_0.id,p1_0.department,p1_0.email,p1_0.full_name,p1_0.phone,p1_0.photo_path,p1_0.profile_type,p1_0.registration_number from profile p1_0 where p1_0.id=?
+Hibernate: delete from profile where id=?
+Hibernate: select p1_0.id,p1_0.department,p1_0.email,p1_0.full_name,p1_0.phone,p1_0.photo_path,p1_0.profile_type,p1_0.registration_number from profile p1_0
+Hibernate: select p1_0.id,p1_0.department,p1_0.email,p1_0.full_name,p1_0.phone,p1_0.photo_path,p1_0.profile_type,p1_0.registration_number from profile p1_0
