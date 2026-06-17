@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: idcard-pod
+spec:
+  containers:
+    - name: web
+      image: ubuntu:22.04
+      command: ["/bin/bash", "-c"]
+      args:
+        - apt update &&
+          apt install -y openjdk-21-jdk nginx openssh-server git php-cli &&
+          service ssh start &&
+          nginx -g 'daemon off;'
+      ports:
+        - containerPort: 8080
+        - containerPort: 8443
+        - containerPort: 2222
+
+    - name: mysql
+      image: mysql:8.0
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "Hello@123"
+        - name: MYSQL_DATABASE
+          value: "B-OUN_RITHI-db"
+      ports:
+        - containerPort: 3306
