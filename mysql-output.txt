@@ -1,0 +1,7 @@
+Database
+B-OUN_RITHI-db
+idcard_db
+information_schema
+mysql
+performance_schema
+sys
