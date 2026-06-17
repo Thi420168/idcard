@@ -1,0 +1,17 @@
+---
+- name: Deploy to Web Server
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Show deployment message
+      debug:
+        msg: "Deploying Spring Boot application to Web Server"
+
+    - name: Show current directory
+      command: pwd
+      register: deploy_path
+
+    - name: Print deploy path
+      debug:
+        var: deploy_path.stdout
